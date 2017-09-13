@@ -16,13 +16,60 @@ html, body {
   overflow: hidden;
 }
 
+#intro {
+  top: 20vh;
+  left: 20vw;
+  right: 20vw;
+  background: #DA7;
+  padding: 2vw;
+  font-size: 2vw;
+  font-family: serif;
+  color: #530;
+  border: 1vw solid #973;
+  border-radius: 4vw;
+  box-shadow: 0.5vw 0.5vw 2vw rgba(0,0,0,0.6)
+}
+.vertical #intro {
+  font-size: 4vw;
+  text-align: center;
+}
+#intro * {
+  position: relative;
+}
+#intro h1 {
+  color: #963;
+  text-shadow: 0.2vw 0.2vw 0.2vw #B84;
+  text-align: center;
+  margin-bottom: 3vh;
+}
+#start-bt {
+  text-align: right;
+  padding-right: 1vw;
+}
+.vertical #start-bt { padding: 2vh 1vw 1vh }
+#intro button {
+  display: inline-block;
+  font-size: 3vw;
+  font-family: serif;
+  font-weight: bold;
+  color: #963;
+  background: #EC9;
+  border: 3px solid #973;
+  border-radius: 1vw;
+  padding: 1px 1vw;
+}
+.vertical #intro button {
+  font-size: 6vw;
+}
+
 #ctrl {
   top: 0;
   right: 0;
   height: 50%;
+  width: 100%;
 }
 
-#jumpP {
+#jumpP, #lifeP {
   bottom: 0;
   right: 20px;
   width: 30px;
@@ -31,19 +78,80 @@ html, body {
   border: 3px solid rgba(0,0,0,0.3);
   border-radius: 8px;
 }
-#jumpPF {
+
+#jumpPF, #lifePF {
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 70%;
-  background: rgba(255,0,0,1);
+  height: 0%;
+  background: linear-gradient(#F00, #800);
   border-radius: 5px;
 }
 
-#e { /* earth */
-  bottom: -2900px;
+#lifeP {
+  right: auto;
+  left: 20px;
+}
+#lifePF {
+  background: #0F0;
+  box-shadow: inset 0 0 20px #070;
+  transition: 0.5s;
+}
+
+.vertical #jumpP, .vertical #lifeP {
+  width: 20px;
+  border: 2px solid rgba(0,0,0,0.3);
+}
+
+#jumpP p {
+  font-family: sans-serif;
+  font-size: 20px;
+  line-height: 20px;
+  transform: rotate(-90deg);
+  top: 30px;
+  left: -15px;
+  color: rgba(255,255,255,0.5);
+}
+.vertical #jumpP p {
+  font-size: 17px;
+  left: -14px;
+}
+
+#lifeP carrot-wrap {
+  transform: rotate(-45deg);
+  left: -1px;
+  top: 14px;
+}
+#lifeP carrot::before {
+  box-shadow: -2px 0px 7px rgba(0,0,0,0.5);
+}
+.vertical #lifeP carrot-wrap {
+  left: -6px;
+}
+
+#distEl {
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  color: #FFF;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+#distEl div {
+  top: 150px;
+  width: 100%;
+  font-size: 22px;
+}
+
+#canvas {
+  bottom: 0;
   left: 50%;
-  margin-left: -1500px;
+}
+
+#e { /* earth */
+  left: -1500px;
   width: 3000px;
   height: 3000px;
 }
@@ -78,15 +186,15 @@ bw { /* bunny wrapper */
   width: 80px;
   height: 80px;
   margin: -40px 0 0 -40px;
-  transform: translate(0,-1535px);
   z-index:20;
 }
 b { /* bunny */
-  top: 10px;
-  left: 10px;
+  top: -30px;
+  left: -30px;
   height: 60px;
   width: 60px;
   background: linear-gradient(160deg, #FFF 40%, #CCC);
+  transform: rotate(-1deg);
   transition: 0s;
 }
 bw *, bw *::before, bw *::after {
@@ -250,6 +358,38 @@ bw.jump bh::after, bw.landing bh::after {
   transform: rotate(-100deg);
 }
 
+bw.dead b {
+  transform: rotate(-135deg);
+}
+bw.dead.hunted b {
+  transform: rotate(45deg);
+}
+
+bw.dead *, bw.dead *::before, bw.dead *::after {
+  border-right: 7px solid #B00;
+}
+bw.dead b::after {
+  left: 52px;
+  transform: rotate(-40deg);
+  xborder: none;
+  border-right: 5px solid #B00;
+}
+bw.dead bl::before {
+  bottom: -13px;
+  transform: rotate(45deg);
+  border: none;
+  border-top: 5px solid #B00;
+}
+bw.dead bh {
+  left: 30px;
+  transform: rotate(40deg);
+  border: none;
+  border-top: 7px solid #B00;
+}
+bw.dead.hunted bh {
+  transform: rotate(110deg);
+}
+
 @keyframes flower-wave {
   10% { left: -7px }
   12% { left: -9px }
@@ -293,24 +433,25 @@ carrot-wrap {
   top: 50%;
 }
 
-carrot {
+carrot::before {
   background: orange;
   width: 40px;
   height: 8px;
+  transform: rotate(-45deg);
 }
 leaves::before, leaves::after {
-  left: 28px;
-  top: 0px;
+  left: 29px;
+  top: -23px;
   width: 30px;
   height: 30px;
   border-right: 4px solid #060;
-  transform: rotate(-50deg) skewX(20deg);
+  transform: rotate(-95deg) skewX(20deg);
 }
 leaves::after {
-  top: 1px;
+  top: -21px;
   left: 34px;
   width: 20px;
-  transform: rotate(-30deg) skewX(20deg);
+  transform: rotate(-74deg) skewX(20deg);
 }
 
 #fireWrap {
@@ -375,6 +516,98 @@ leaves::after {
   100% { transform: scale(1, 1) translate(0, 0) skewX(5deg) }
 }
 
+bird-wrap {
+  left: 50%;
+  top: 50%;
+  z-index: 30;
+}
+
+bird {
+  left: -90px;
+  top: 0px;
+  width: 180px;
+  height: 80px;
+  background: #630;
+  border-radius: 0 0 100px 100px;
+  z-index: 2;
+}
+
+bird::before {
+  right: -30px;
+  top: -10px;
+  height: 20px;
+  border-radius: 0;
+  border: 0 solid transparent;
+  border-right-color: #630;
+  border-width: 15px 70px 35px 0;
+}
+
+bird head {
+  top: -3px;
+  left: -40px;
+  width: 0;
+  height: 20px;
+  border-radius: 0;
+  border: 0 solid transparent;
+  border-right-color: #840;
+  border-width: 8px 55px 30px 0;
+}
+
+bird head::before {
+  left: -20px;
+  top: 3px;
+  border-radius: 0;
+  border: 0 solid transparent;
+  border-right-color: #DA0;
+  border-width: 15px 20px 2px 0;
+}
+
+bird head::after {
+  left: 10px;
+  top: 5px;
+  border-radius: 0;
+  border: 0 solid transparent;
+  border-right-color: #520;
+  border-width: 8px 15px 0 0;
+}
+
+bird-wrap .wing {
+  top: 10px;
+  left: -50px;
+}
+
+bird-wrap .wing::before {
+  background: linear-gradient(#630, #520 50%);
+  width: 100px;
+  height: 80px;
+  border-radius: 0 0 0 100%;
+  animation: fly 10s linear infinite;
+}
+
+@keyframes fly {
+    0% { transform: skewX(30deg) scale(1, 0.9) translate(8px, -8px) }
+    2% { transform: skewX(20deg) scale(1, 1.1) translate(0px, -0px) }
+    4% { transform: skewX(30deg) scale(1, 0.9) translate(8px, -8px) }
+    8% { transform: skewX(20deg) scale(1, 1.1) translate(0px, -0px) }
+   10% { transform: skewX(30deg) scale(1, 0.9) translate(8px, -8px) }
+   12% { transform: skewX(20deg) scale(1, 1.1) translate(0px, -0px) }
+   14% { transform: skewX(30deg) scale(1, 0.9) translate(8px, -8px) }
+   16% { transform: skewX(20deg) scale(1, 1.1) translate(0px, -0px) }
+   18% { transform: skewX(30deg) scale(1, 0.9) translate(8px, -8px) }
+   20% { transform: skewX(20deg) scale(1, 1.1) translate(0px, -0px) }
+  100% { transform: skewX(30deg) scale(1, 0.9) translate(8px, -8px) }
+}
+
+bird-wrap wing-left {
+  z-index: 3;
+}
+bird-wrap wing-right.wing {
+  top: 5px;
+  left: -40px;
+}
+bird-wrap wing-right.wing::before {
+  background: #582800;
+}
 
 @keyframes capim-wave {
   10% { transform: rotate( 0deg) }
